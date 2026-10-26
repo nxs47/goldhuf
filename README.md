@@ -17,6 +17,10 @@ Das ausführliche Spielkonzept steht in [KONZEPT.md](KONZEPT.md).
 Spiel — Stile, Code, Grafiken, Musik — und läuft über `file://` ohne Webserver,
 ohne Terminal, ohne Internet. Zum Weitergeben genügt diese eine Datei.
 
+
+[`Demo`](https://kronenwett.com/goldhuf.html)
+
+
 ### Auf Handy und Tablet
 
 Das Spiel ist für den Finger gebaut: Alles ist antippbar, nichts braucht eine
