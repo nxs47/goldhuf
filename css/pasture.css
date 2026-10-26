@@ -1,0 +1,210 @@
+/* pasture.css — die Weide: Wiese, Zaun, grasende Pferde, Besetzungsliste */
+
+#screen-pasture { background: #1c2a17; }
+
+.pasture-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* ---------- Kopfzeile ---------- */
+
+.pasture-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  background: rgba(0,0,0,.32);
+  border-bottom: 2px solid rgba(0,0,0,.35);
+  color: var(--cream);
+}
+.pasture-head h2 { margin: 0; color: var(--straw); font-size: 1.55rem; }
+.pasture-head .sub { margin: 0; color: #bfd0ae; font-size: .9rem; }
+.pasture-head .grow { flex: 1 1 auto; }
+
+.grass-meter { min-width: 200px; }
+.grass-label { font-size: .82rem; font-weight: 700; margin-bottom: 4px; color: #cfe4be; }
+.grass-bar {
+  height: 16px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(0,0,0,.45);
+  border: 2px solid rgba(255,255,255,.2);
+}
+.grass-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6aa84f, #9ad47a);
+  transition: width .6s ease;
+}
+.grass-bar.low .grass-fill { background: linear-gradient(90deg, #c98a13, #e8a63a); }
+
+/* ---------- Die Wiese ---------- */
+
+.pasture-field {
+  --grass: 1;
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 360px;
+  overflow: hidden;
+  background:
+    linear-gradient(#8fd0ee 0%, #cfe9f6 34%, transparent 34%),
+    linear-gradient(180deg,
+      color-mix(in srgb, #7ab04f calc(var(--grass) * 100%), #a89a63) 34%,
+      color-mix(in srgb, #4f7a38 calc(var(--grass) * 100%), #7d7048) 100%);
+}
+
+/* Hügel am Horizont */
+.pasture-field::before {
+  content: "";
+  position: absolute;
+  left: -5%; right: -5%;
+  top: 20%;
+  height: 18%;
+  background: #6f9e50;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  opacity: .85;
+}
+/* Sonne */
+.pasture-field::after {
+  content: "";
+  position: absolute;
+  top: 6%; right: 9%;
+  width: 62px; height: 62px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff3c4, #ffd964 60%, rgba(255,217,100,0));
+}
+
+.pasture-fence {
+  position: absolute;
+  left: 0; right: 0;
+  top: 33%;
+  height: 54px;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, #d9c9a8 0 9px, transparent 9px 96px),
+    linear-gradient(transparent 12px, #e8dcc0 12px 19px, transparent 19px 34px, #e8dcc0 34px 41px, transparent 41px);
+  opacity: .95;
+}
+
+/* Grasbüschel */
+.grass-layer { position: absolute; inset: 34% 0 0 0; pointer-events: none; }
+.tuft {
+  position: absolute;
+  width: 12px;
+  height: calc(16px * var(--grass) + 3px);
+  border-radius: 60% 60% 20% 20% / 90% 90% 10% 10%;
+  background: linear-gradient(#8fce6f, #4f7a38);
+  opacity: calc(.25 + var(--grass) * .75);
+  transform-origin: 50% 100%;
+  transition: height .6s, opacity .6s;
+}
+.tuft.row-0 { filter: brightness(.85); }
+.tuft.row-2 { filter: brightness(1.12); }
+.grass-layer.bare .tuft { opacity: .18; height: 3px; }
+
+/* Hinweis, wenn niemand draußen ist */
+.pasture-field.nobody::after { opacity: .9; }
+
+/* Pferde auf der Weide — nutzt die Animationen aus stall.css */
+.pasture-horse {
+  bottom: 6%;
+  width: min(260px, 30%);
+  z-index: 3;
+  transform: translateX(-50%) scaleX(var(--flip, 1)) scale(var(--depth, 1));
+  filter: drop-shadow(0 10px 10px rgba(20,40,10,.4));
+}
+.pasture-horse svg { width: 100%; height: auto; display: block; }
+
+/* Meldung „abgefressen" */
+.pasture-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(20,26,14,.6);
+  backdrop-filter: blur(2px);
+  z-index: 5;
+}
+
+/* ---------- Besetzungsliste ---------- */
+
+.roster {
+  padding: 16px 20px 26px;
+  background: rgba(0,0,0,.3);
+  border-top: 3px solid var(--wood-dark);
+  color: var(--cream);
+}
+.roster-head h3 { margin: 0 0 2px; color: var(--straw); }
+.roster-head .sub { margin: 0 0 12px; color: #bfd0ae; font-size: .88rem; }
+
+.roster-list {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+.roster-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 2px solid var(--wood);
+  border-radius: var(--radius-sm);
+  background: rgba(253,246,230,.94);
+  color: var(--ink);
+}
+.roster-card.outside { border-color: var(--green); box-shadow: 0 0 0 2px rgba(106,168,79,.35); }
+.roster-art { flex: 0 0 60px; width: 60px; }
+.roster-art svg { width: 100%; height: auto; display: block; }
+.roster-info { flex: 1 1 auto; min-width: 0; }
+.roster-name { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; font-weight: 800; }
+.roster-name .badge { font-size: .66rem; padding: 1px 7px; }
+.roster-sub { font-size: .8rem; color: var(--ink-soft); }
+.roster-sub.good { color: var(--green-dark); }
+.roster-sub.mid  { color: var(--gold-dark); }
+.roster-sub.bad  { color: var(--red); }
+.roster-card .btn { flex: 0 0 auto; white-space: nowrap; }
+
+/* ---------- Leere Box im Stall ---------- */
+
+.box-scene.empty-box { display: grid; place-items: center; }
+.away-note {
+  position: relative;
+  z-index: 2;
+  max-width: 460px;
+  margin-bottom: 60px;
+  padding: 22px 26px;
+  text-align: center;
+  border-radius: 18px;
+  background: rgba(253,246,230,.95);
+  border: 3px solid var(--wood-dark);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+}
+.away-note h3 { margin: 6px 0 8px; color: var(--wood-dark); }
+.away-note p { color: var(--ink-soft); }
+.away-icon { font-size: 2.6rem; line-height: 1; }
+.away-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+
+/* Kachel eines Pferdes, das draußen ist */
+.stall-tile.outside .tile-box { background: linear-gradient(#8fd0ee 0 45%, #7ab04f 45%); }
+.stall-tile.outside .tile-box::after { content: none; }
+.tile-away {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+}
+
+/* Leerer Vorrat blinkt kurz auf */
+.prop.empty .trough-body,
+.prop.empty .rack-body { box-shadow: 0 0 0 2px rgba(209,86,74,.55), var(--shadow-sm); }
+
+@media (max-width: 760px) {
+  .pasture-field { min-height: 260px; }
+  .pasture-horse { width: min(190px, 40%); }
+  .grass-meter { min-width: 150px; }
+}
