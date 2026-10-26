@@ -16,6 +16,7 @@ Das ausführliche Spielkonzept steht in [KONZEPT.md](KONZEPT.md).
 **[`goldhuf.html`](goldhuf.html) doppelklicken.** Die Datei enthält das gesamte
 Spiel — Stile, Code, Grafiken, Musik — und läuft über `file://` ohne Webserver,
 ohne Terminal, ohne Internet. Zum Weitergeben genügt diese eine Datei.
+Erstellt mithilfe von KI (claude).
 
 
 [`Demo`](https://kronenwett.com/goldhuf.html)
